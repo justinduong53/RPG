@@ -4,7 +4,7 @@
   "description": "A dungeon-delving turned based RPG",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --hot --inline --watch"
   },
   "repository": {
     "type": "git",
@@ -20,8 +20,14 @@
   },
   "homepage": "https://github.com/justinduong53/RPG#readme",
   "dependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "brfs": "^1.4.3",
     "css-loader": "^0.26.1",
+    "pixi.js": "^4.3.5",
     "style-loader": "^0.13.1",
+    "transform-loader": "^0.2.3",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },
