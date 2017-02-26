@@ -86,6 +86,8 @@ class Character{
 	this.job = job;
 	this.pos = pos;
 	//Non-Constructor variables
+	this.maxHp = this.hp;
+	this.maxMp = this.mp;
 	this.exp = 0;
 	this.atk = 1+str;
 	this.def = 1+vit;
@@ -244,6 +246,18 @@ class Character{
 	}
 	setExp(n){
 		this.exp = n;
+	}
+	getMaxHp(){
+		return this.maxHp;
+	}
+	setMaxHp(n){
+		this.maxHp = n;
+	}
+	getMaxMp(){
+		return this.maxMp;
+	}
+	setMaxMp(n){
+		this.maxMp = n;
 	}
 
 }
