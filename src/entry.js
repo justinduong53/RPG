@@ -38,6 +38,7 @@ function setup(){
 	loader = new PIXI.loaders.Loader();
 
 	loader
+		//UI
 		.add("bg","assets/images/bg.png")
 		.add('button','assets/images/UI/button.png')
 		.add('buttonDown','assets/images/UI/buttonDown.png')
@@ -47,9 +48,15 @@ function setup(){
 		.add('statusMP','assets/images/UI/bluesq.png')
 		.add('statusBar','assets/images/UI/greysq.png')
 		.add('statusBarLoss','assets/images/UI/lgreysq.png')
+		.add('statusSelect','assets/images/UI/lgreensq.png')
+		.add('option','assets/images/UI/dkbluesq.png')
+		.add('optionSelect','assets/images/UI/yellowsq.png')
+		//Battle
+		.add('mouse','assets/images/characters/enemies/mouse.png')
 
 
 		.load(function(loader, resources) {
+				//UI
 				sprites.bgTop = new PIXI.Sprite.fromImage(resources["bg"].url);
 				sprites.bgBottom = new PIXI.Sprite.fromImage(resources["bg"].url);
 				sprites.textureButton = new PIXI.Texture.fromImage(resources["button"].url);
@@ -61,6 +68,11 @@ function setup(){
 				sprites.statusMP = new PIXI.Texture.fromImage(resources["statusMP"].url);
 				sprites.statusBar = new PIXI.Texture.fromImage(resources["statusBar"].url);
 				sprites.statusBarLoss = new PIXI.Texture.fromImage(resources["statusBarLoss"].url);
+				sprites.statusSelect = new PIXI.Texture.fromImage(resources["statusSelect"].url);
+				sprites.option = new PIXI.Texture.fromImage(resources["option"].url);
+				sprites.optionSelect = new PIXI.Texture.fromImage(resources["optionSelect"].url);
+				//Battle
+				sprites.mouse = new PIXI.Texture.fromImage(resources["mouse"].url);
 	});
 
 	state = battle;
@@ -105,6 +117,7 @@ var playerHPTxtStatus = [];
 var playerMPTxtStatus = [];
 var playerHPStatusWidth = [];
 var playerMPStatusWidth = [];
+var enemySprites = [];
 
 var hiro = new PlayerCharacter("Hiro",1,35,20,1,1,1,1,1,1,false,'Snek',0);
 var yeezy = new PlayerCharacter("Yeezy",1,35,20,1,1,1,2,1,1,false,'Snek',1);
@@ -184,6 +197,10 @@ function enemyTurn(){
 	actionQueue.push(new Action(enemies[0],players[0],'basicAttack'));
 }
 
+function enemySpriteLoad(){
+
+}
+
 function updatePlayerInfo(){
 	for(var i = 0;i<players.length;i++){
 		playerNameTxtStatus[players[i].getPos()].text = players[i].getName();
@@ -207,6 +224,7 @@ function updatePlayerInfo(){
 		playerHPTxtStatus[players[i].getPos()].text = players[i].getHp()+"";
 		playerMPTxtStatus[players[i].getPos()].text = players[i].getMp()+"";
 	}
+	
 }
 
 function getFirstAlivePlayer(){
@@ -272,6 +290,13 @@ function spriteLoad(){
 		250 +sprites.textureButton.width/2,0.58*app.renderer.height+((0.42*app.renderer.height)/6)*4.5,
 		250 +sprites.textureButton.width/2,0.58*app.renderer.height+((0.42*app.renderer.height)/6)*5.5,
 	]
+	var enemyFrontPositions = [
+		100,100,
+		200,200,
+		300,300,
+		
+
+	]
 	//---------------------- World State -----------------------------------//
 
 
@@ -294,6 +319,8 @@ function spriteLoad(){
 
 		//app.stage.addChild(sprites.bgBottom);
 		battleScene.addChild(sprites.bgBottom);
+
+
 
 		for (var i = 0;  i < worldButtonPositions.length;i++){
 
@@ -325,8 +352,9 @@ function spriteLoad(){
 
 		for (var i = 0;  i < battleButtonPositions.length;i++){
 
-			var button = new PIXI.Sprite(sprites.textureButton);
+			var button = new PIXI.Sprite(sprites.option);
 			button.buttonMode = true;
+			button.alpha = 0.9;
 
 
 			button.height = ((0.42*app.renderer.height)/6)
@@ -348,6 +376,19 @@ function spriteLoad(){
 
 	        battleButtons.push(button);
 
+		}
+		for(var i = 0; i < enemyFrontPositions.length;i++){
+			var enemySprite = new PIXI.Sprite(sprites.mouse);
+
+			enemySprite.x = enemyFrontPositions[i*2];
+			enemySprite.y = enemyFrontPositions[i*2 + 1];
+
+			enemySprite.interactive = true;
+		    enemySprite.buttonMode = true;
+			
+			battleScene.addChild(enemySprite);
+
+	        enemySprites.push(enemySprite);
 		}
 
 		for (var i = 0;  i < 6 ;i++){
@@ -561,7 +602,7 @@ function spriteLoad(){
 function onButtonDown() {
 	console.log("hi")
     this.isdown = true;
-    this.texture = sprites.textureButtonDown;
+    this.texture = sprites.optionSelect;
     this.alpha = 1;
 }
 
@@ -569,10 +610,10 @@ function onButtonUp() {
 
     this.isdown = false;
     if (this.isOver) {
-        this.texture = sprites.textureButtonOver;
+        this.texture = sprites.option;
     }
     else {
-        this.texture = sprites.textureButton;
+        this.texture = sprites.option;
     }
     if(this == worldButtons[3]){
 
@@ -633,7 +674,7 @@ function onButtonOver() {
     if (this.isdown) {
         return;
     }
-    this.texture = sprites.textureButtonOver;
+    this.alpha = 1;
 }
 
 function onButtonOut() {
@@ -641,7 +682,8 @@ function onButtonOut() {
     if (this.isdown) {
         return;
     }
-    this.texture = sprites.textureButton;
+    this.alpha = 0.9;
+    //this.texture = sprites.textureButton;
 }
 setup();
 
